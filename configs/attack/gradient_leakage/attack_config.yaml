@@ -1,0 +1,94 @@
+# Gradient Leakage Attack Configuration
+
+# Attack parameters
+attack:
+  # Optimization algorithm: lbfgs, adam, cosine
+  optimizer: "lbfgs"
+  num_iterations: 1000
+  num_restarts: 10  # Multiple random restarts for robustness
+
+  # L-BFGS specific
+  lbfgs:
+    max_iter: 20
+    tolerance_change: 1e-9
+    history_size: 100
+
+  # Adam specific
+  adam:
+    lr: 0.1
+    betas: [0.9, 0.999]
+    weight_decay: 0.0
+
+  # Cosine similarity specific
+  cosine:
+    lr: 0.01
+    momentum: 0.9
+
+# Model configuration
+model:
+  # For images: simple_cnn, lenet
+  # For tabular: mlp
+  architecture: "simple_cnn"
+
+  # CNN parameters
+  cnn:
+    conv_channels: [32, 64]
+    kernel_size: 3
+    pool_size: 2
+    fc_hidden: 128
+    dropout: 0.1
+
+  # MLP parameters
+  mlp:
+    hidden_dims: [128, 64]
+    dropout: 0.1
+
+# Data configuration
+data:
+  # Dataset: mnist, cifar10, tabular
+  dataset: "mnist"
+  batch_size: 1  # DLG works best with batch_size=1
+  num_samples: 10  # Number of samples to attack
+
+  # Data paths
+  data_dir: "data/raw"
+  output_dir: "data/reconstructed"
+  comparison_dir: "data/comparison"
+
+# Defense evaluation
+defenses:
+  # Differential Privacy
+  dp_noise:
+    enabled: false
+    noise_type: "gaussian"  # gaussian, laplace
+    sigma: [0.01, 0.1, 0.5, 1.0, 2.0]  # Noise levels to test
+
+  # Gradient Compression
+  compression:
+    enabled: false
+    method: "topk"  # topk, random, quantization
+    sparsity: [0.1, 0.3, 0.5, 0.7, 0.9]  # Fraction to keep
+
+# Evaluation metrics
+metrics:
+  # Reconstruction quality
+  quality: ["mse", "ssim", "psnr"]
+
+  # Gradient matching
+  matching: ["mse", "cosine"]
+
+  # Logging
+  log_interval: 10  # Log every N iterations
+  save_reconstructions: true
+  save_gradients: false
+
+# Experiment settings
+experiment:
+  seed: 42
+  device: "cuda"  # cuda, cpu, mps
+  num_workers: 4
+  pin_memory: true
+
+  # Results
+  results_dir: "results/reconstructions"
+  log_dir: "logs"

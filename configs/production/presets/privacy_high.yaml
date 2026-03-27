@@ -1,0 +1,27 @@
+# High Privacy Preset
+# Prioritizes privacy over model performance
+# Use for: Sensitive data, strict regulatory requirements
+
+privacy:
+  dp_enabled: true
+  epsilon: 0.1  # Strong privacy guarantee
+  delta: 1e-6
+  max_grad_norm: 0.5
+  noise_multiplier: 1.0  # High noise
+  secure_agg_enabled: true
+
+security:
+  signguard_enabled: true
+  signguard_threshold: 0.05  # More sensitive
+  attack_detection_enabled: true
+
+fl:
+  n_rounds: 150  # More rounds to compensate for noise
+  local_epochs: 3  # Fewer local epochs
+
+model:
+  learning_rate: 0.0005  # Lower learning rate for stability
+
+# Reduce communication overhead
+data:
+  batch_size: 64  # Larger batches for better DP guarantees

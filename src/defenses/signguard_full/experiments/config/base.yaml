@@ -1,0 +1,60 @@
+# Base configuration for SignGuard experiments
+
+defaults:
+  - data: credit_card
+  - override hydra/launcher: basic
+
+# Experiment settings
+experiment:
+  name: signguard_baseline
+  seed: 42
+  output_dir: ${oc.env:SIGNGUARD_OUTPUT_DIR,results}
+  checkpoint_dir: checkpoints
+  log_interval: 1
+  save_interval: 10
+
+# Federated learning settings
+fl:
+  num_rounds: 100
+  num_clients: 20
+  clients_per_round: 10
+  local_epochs: 5
+  learning_rate: 0.01
+  batch_size: 32
+  optimizer: sgd
+  optimizer_momentum: 0.9
+
+# Attack settings
+attack:
+  type: null  # null, label_flip, backdoor, model_poison
+  num_byzantine: 4
+  byzantine_client_ids: []  # Empty = random selection
+  # Attack-specific params in attack configs
+
+# Defense settings
+defense:
+  type: signguard  # signguard, fedavg, krum, trimmed_mean, foolsgold, bulyan
+  # Defense-specific params in defense configs
+
+# Model settings
+model:
+  type: mlp  # mlp, cnn, lstm
+  input_dim: 28
+  hidden_dims: [128, 64]
+  output_dim: 2
+  dropout: 0.1
+
+# Hardware
+device: cpu  # cpu, cuda, mps
+
+# Reproducibility
+deterministic: true
+benchmark: false
+
+# Hydra settings
+hydra:
+  run:
+    dir: ${experiment.output_dir}/${experiment.name}/${now:%Y%m%d_%H%M%S}
+  sweep:
+    dir: ${experiment.output_dir}/${experiment.name}/multirun
+    subdir: ${hydra.job.num}

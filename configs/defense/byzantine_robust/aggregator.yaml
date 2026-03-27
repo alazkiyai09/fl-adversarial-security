@@ -1,0 +1,46 @@
+# Aggregator Hyperparameters Configuration
+
+# Coordinate-wise Median
+median:
+  # No hyperparameters needed
+
+# Trimmed Mean
+trimmed_mean:
+  beta: 0.2  # Fraction to trim from each end (default: 0.2)
+  # Robust to: beta × n attackers
+  # Recommended values:
+  #   - 0.1: Light trimming, more clients
+  #   - 0.2: Balanced (default)
+  #   - 0.3: Heavy trimming, fewer clients required
+
+# Krum
+krum:
+  # No hyperparameters (uses num_attackers)
+  # Robust to: floor((n-2)/3) attackers
+  # Requirement: n >= 3f + 3
+
+# Multi-Krum
+multi_krum:
+  m: 5  # Number of updates to select and average
+  # If None, auto-computed as n - f - 2
+  # Robust to: floor((n-2)/3) attackers (same as Krum)
+
+# Bulyan
+bulyan:
+  # No hyperparameters (uses num_attackers)
+  # Robust to: floor((n-1)/4) attackers
+  # Requirement: n >= 4f + 1
+
+# General settings
+clients:
+  min_clients: 10  # Minimum number of clients for robustness
+  recommended_clients: 20  # Recommended for evaluation
+
+# Attacker fractions to test
+attacker_fractions: [0.1, 0.2, 0.3, 0.4]
+
+# Training settings
+training:
+  rounds: 10  # Number of federated rounds
+  local_epochs: 1  # Local training epochs per client
+  learning_rate: 0.01

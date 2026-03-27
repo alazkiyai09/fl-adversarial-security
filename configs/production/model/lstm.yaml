@@ -1,0 +1,24 @@
+# LSTM Model Configuration
+
+model:
+  type: lstm
+  input_size: 30
+  hidden_size: 128
+  num_layers: 2
+  dropout: 0.2
+  output_size: 2
+  bidirectional: false
+  learning_rate: 0.001
+
+  # Optimizer
+  optimizer: adam
+  weight_decay: 1e-5
+
+  # Learning rate scheduler
+  scheduler: step  # Options: step, cosine, plateau, none
+  step_size: 20
+  gamma: 0.5
+
+  # Loss function
+  loss_function: cross_entropy  # Options: cross_entropy, focal, weighted
+  class_weights: null  # Auto-computed if null

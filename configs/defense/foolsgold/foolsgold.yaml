@@ -1,0 +1,42 @@
+# FoolsGold Defense Configuration
+
+# FoolsGold hyperparameters
+foolsgold:
+  history_length: 10          # Number of historical gradients to track
+  similarity_threshold: 0.9    # Threshold for flagging high similarity
+  lr_scale_factor: 0.1         # Learning rate scaling factor (0-1)
+
+# Experiment settings
+experiment:
+  num_rounds: 100             # Number of federated learning rounds
+  num_clients: 10             # Total number of clients
+  num_malicious: 2            # Number of malicious clients (Sybils)
+
+# Client settings
+client:
+  num_epochs: 5               # Local training epochs per round
+  learning_rate: 0.01         # Client learning rate
+  batch_size: 32              # Batch size for training
+
+# Attack settings
+attack:
+  type: "sybil"               # Attack type: sybil, collusion, none
+  noise_level: 0.0            # Noise level for Sybil updates (0 = identical)
+  magnitude: 1.0              # Attack magnitude
+
+# Model settings
+model:
+  input_dim: 20               # Number of input features
+  hidden_dims: [64, 32]       # Hidden layer sizes
+  dropout: 0.2                # Dropout rate
+
+# Evaluation settings
+evaluation:
+  fraction_evaluate: 0.5      # Fraction of clients for evaluation
+  min_evaluate_clients: 2     # Minimum number of evaluation clients
+
+# Output settings
+output:
+  results_dir: "results"      # Directory for results
+  figures_dir: "results/figures"  # Directory for plots
+  save_round_metrics: true    # Save per-round metrics

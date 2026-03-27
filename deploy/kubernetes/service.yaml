@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fl-adversarial-security-api
+spec:
+  selector:
+    app: fl-adversarial-security-api
+  ports:
+    - port: 80
+      targetPort: 8000

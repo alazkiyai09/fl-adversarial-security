@@ -1,0 +1,49 @@
+# Federated Learning Configuration
+
+federated_learning:
+  # Server settings
+  server:
+    aggregation_method: "fedavg"  # Federated averaging
+    n_rounds: 50
+    client_fraction: 1.0  # Use all clients each round
+
+  # Client settings
+  client:
+    n_clients: 10
+    local_epochs: 5
+    batch_size: 32
+    learning_rate: 0.01
+    optimizer: "adam"
+
+  # Model configuration
+  model:
+    type: "logistic_regression"  # Options: logistic_regression, neural_network
+    input_dim: 10  # Number of features
+    hidden_dims: [64, 32]  # For neural network
+
+  # Data configuration
+  data:
+    n_features: 10
+    n_classes: 2  # Binary classification (fraud vs legitimate)
+    feature_names: ["amount", "age", "merchant_category", "location_distance", "transaction_hour",
+                    "day_of_week", "customer_age", "account_age", "previous_fraud", "transaction_frequency"]
+
+  # Differential privacy (if enabled)
+  differential_privacy:
+    enabled: false
+    epsilon: 1.0
+    delta: 1e-5
+    max_grad_norm: 1.0
+
+  # Secure aggregation
+  secure_aggregation:
+    enabled: false
+
+# Synthetic data generation
+synthetic_data:
+  base_distribution: "normal"
+  fraud_patterns:
+    - "random"
+    - "amount_correlated"
+    - "location_correlated"
+  random_state: 42

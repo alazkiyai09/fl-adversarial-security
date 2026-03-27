@@ -1,0 +1,138 @@
+version: '3.8'
+
+services:
+  # MLflow tracking server
+  mlflow:
+    image: python:3.10-slim
+    container_name: fl-mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlruns
+    command: >
+      bash -c "
+        pip install mlflow sqlalchemy psycopg2-binary &&
+        mlflow server \
+          --backend-store-uri sqlite:///mlruns/mlflow.db \
+          --default-artifact-root /mlruns \
+          --host 0.0.0.0 \
+          --port 5000
+      "
+    networks:
+      - fl-network
+    restart: unless-stopped
+
+  # FL Server
+  server:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile.server
+    container_name: fl-server
+    ports:
+      - "8080:8080"
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - NUM_CLIENTS=3
+      - NUM_ROUNDS=10
+      - PRESET=privacy_medium
+    volumes:
+      - ../../models:/models
+      - ../../logs:/logs
+      - ../../mlruns:/mlruns
+    depends_on:
+      - mlflow
+    networks:
+      - fl-network
+    restart: unless-stopped
+
+  # FL Client 1
+  client-1:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile.client
+    container_name: fl-client-1
+    environment:
+      - SERVER_ADDRESS=server:8080
+      - CLIENT_ID=1
+      - LOCAL_EPOCHS=5
+    volumes:
+      - ../../data:/data:ro
+      - ../../logs:/logs
+    depends_on:
+      - server
+    networks:
+      - fl-network
+    restart: unless-stopped
+
+  # FL Client 2
+  client-2:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile.client
+    container_name: fl-client-2
+    environment:
+      - SERVER_ADDRESS=server:8080
+      - CLIENT_ID=2
+      - LOCAL_EPOCHS=5
+    volumes:
+      - ../../data:/data:ro
+      - ../../logs:/logs
+    depends_on:
+      - server
+    networks:
+      - fl-network
+    restart: unless-stopped
+
+  # FL Client 3
+  client-3:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile.client
+    container_name: fl-client-3
+    environment:
+      - SERVER_ADDRESS=server:8080
+      - CLIENT_ID=3
+      - LOCAL_EPOCHS=5
+    volumes:
+      - ../../data:/data:ro
+      - ../../logs:/logs
+    depends_on:
+      - server
+    networks:
+      - fl-network
+    restart: unless-stopped
+
+  # Fraud Detection API
+  api:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile.api
+    container_name: fraud-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_STORE_PATH=/models
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    volumes:
+      - ../../models:/models
+      - ../../logs:/logs
+    depends_on:
+      - mlflow
+      - server
+    networks:
+      - fl-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  fl-network:
+    driver: bridge
+
+volumes:
+  mlruns:

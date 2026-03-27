@@ -1,0 +1,13 @@
+# Trimmed Mean defense configuration
+
+defense:
+  type: trimmed_mean
+
+  # Trimming parameters
+  trim_ratio: 0.2  # Fraction to trim from each end
+
+  # Per-parameter trimming
+  per_parameter: false  # Apply to each parameter separately
+
+  # Aggregation
+  fallback_to_mean: false

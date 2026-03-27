@@ -1,0 +1,217 @@
+# SignGuard Configuration File
+# Cryptographic Signature-Based Defense for Federated Learning
+
+# =============================================================================
+# Cryptographic Settings
+# =============================================================================
+crypto:
+  curve: "secp256k1"  # Elliptic curve for ECDSA
+  signature_algorithm: "ECDSA"
+  key_format: "PEM"
+  # Deterministic signatures (RFC 6979)
+  deterministic: true
+
+# =============================================================================
+# Anomaly Detection Settings
+# =============================================================================
+detection:
+  # Factor weights (must sum to 1.0)
+  factor_weights:
+    l2_magnitude: 0.30
+    directional_consistency: 0.25
+    layer_wise: 0.25
+    temporal_consistency: 0.20
+
+  # L2 Norm Anomaly
+  l2_threshold_percentile: 95  # Percentile for threshold determination
+  l2_fixed_threshold: null      # Alternative: fixed threshold value
+
+  # Directional Consistency
+  cosine_similarity_threshold: 0.7  # Minimum cosine similarity
+  directional_window: 5             # Moving window for global direction
+
+  # Layer-wise Analysis
+  layer_anomaly_threshold: 2.0      # MAD multiplier for outliers
+  layer_weights: "uniform"          # or "magnitude-based"
+
+  # Temporal Consistency
+  temporal_window: 5                # Number of past rounds to track
+  temporal_threshold: 3.0           # Standard deviation multiplier
+
+  # Overall Anomaly Threshold
+  anomaly_threshold: 0.5            # 0-1 scale, above = suspicious
+  use_adaptive_threshold: true      # Adjust threshold based on round statistics
+
+# =============================================================================
+# Reputation System Settings
+# =============================================================================
+reputation:
+  # Reputation update parameters
+  initial_reputation: 0.5           # Starting reputation for all clients
+  min_reputation: 0.01              # Never fully exclude clients
+  max_reputation: 1.0
+  decay_factor: 0.9                 # Alpha: weight on historical reputation
+
+  # Probation for new clients
+  probation_rounds: 5               # Rounds before full reputation weight
+  probation_weight_multiplier: 0.5  # Weight multiplier during probation
+
+  # Aggregation parameters
+  min_total_reputation: 0.3         # Minimum total reputation to aggregate
+  min_reputation_for_aggregation: 0.05  # Individual minimum
+
+# =============================================================================
+# Federated Learning Settings
+# =============================================================================
+federated_learning:
+  # Server configuration
+  num_rounds: 100
+  num_clients: 20
+  clients_per_round: 10
+  fraction_fit: 0.5
+  fraction_evaluate: 0.2
+
+  # Client training
+  local_epochs: 5
+  batch_size: 32
+  learning_rate: 0.01
+
+  # Model architecture
+  model_type: "mlp"  # Options: mlp, cnn, lstm
+  input_size: 784    # For MNIST/Fashion-MNIST
+  hidden_sizes: [256, 128]
+  num_classes: 10
+
+# =============================================================================
+# Attack Settings (for evaluation)
+# =============================================================================
+attacks:
+  # Label flip attack
+  label_flip:
+    enabled: false
+    flip_ratio: 0.3  # Fraction of labels to flip
+    source_class: 1
+    target_class: 7
+
+  # Backdoor attack
+  backdoor:
+    enabled: false
+    poison_ratio: 0.2  # Fraction of training data to poison
+    target_label: 0
+    trigger_pattern: "pattern_1"  # Pixel pattern for backdoor
+    backdoor_weight: 0.5
+
+  # Model poisoning
+  model_poisoning:
+    enabled: false
+    attack_type: "sign_flip"  # Options: sign_flip, magnitude_scaling, gaussian_noise
+    scaling_factor: 5.0
+    noise_std: 0.5
+
+  # Malicious client configuration
+  malicious_fraction: 0.2  # Fraction f < n/3
+  malicious_behavior: "adaptive"  # Options: static, adaptive
+
+# =============================================================================
+# Experiment Settings
+# =============================================================================
+experiments:
+  # Dataset
+  dataset: "creditcard"  # Options: creditcard, mnist, fashion_mnist, cifar10
+
+  # Splits
+  train_fraction: 0.8
+  val_fraction: 0.1
+  test_fraction: 0.1
+
+  # Random seed
+  random_seed: 42
+
+  # Device
+  device: "cuda"  # Options: cuda, cpu, auto
+
+  # Logging
+  log_frequency: 5  # Log every N rounds
+  save_frequency: 10  # Save checkpoint every N rounds
+
+# =============================================================================
+# Evaluation Settings
+# =============================================================================
+evaluation:
+  # Baseline defenses to compare
+  baselines:
+    - "FedAvg"
+    - "Krum"
+    - "TrimmedMean"
+    - "FoolsGold"
+    - "Bulyan"
+
+  # Metrics to compute
+  metrics:
+    - "accuracy"
+    - "loss"
+    - "asr"  # Attack Success Rate
+    - "detection_f1"
+    - "detection_precision"
+    - "detection_recall"
+    - "reputation_distribution"
+    - "computation_overhead"
+    - "communication_overhead"
+
+  # Ablation study configurations
+  ablation:
+    - "SignGuard-Full"       # All components
+    - "SignGuard-NoSig"      # Without cryptographic signatures
+    - "SignGuard-NoRep"      # Without reputation (uniform weights)
+    - "SignGuard-L2Only"     # L2 magnitude only
+    - "SignGuard-DirOnly"    # Directional consistency only
+    - "SignGuard-LayerOnly"  # Layer-wise analysis only
+    - "SignGuard-TempOnly"   # Temporal consistency only
+
+  # Number of runs for statistical significance
+  num_runs: 5
+  confidence_interval: 0.95
+
+# =============================================================================
+# Visualization Settings
+# =============================================================================
+visualization:
+  output_dir: "results/plots"
+
+  # Plots to generate
+  plot_types:
+    - "accuracy_vs_round"
+    - "asr_vs_round"
+    - "reputation_evolution"
+    - "anomaly_score_distribution"
+    - "detection_confusion_matrix"
+    - "overhead_comparison"
+    - "ablation_comparison"
+
+  # Figure settings
+  figure_size: [10, 6]
+  dpi: 300
+  style: "seaborn-v0_8-whitegrid"
+
+# =============================================================================
+# Security Parameters
+# =============================================================================
+security:
+  # Byzantine resilience
+  max_malicious_fraction: 0.33  # f < n/3
+
+  # Cryptographic security
+  signature_security_parameter: 128  # bits
+
+  # Minimum participation for security
+  min_participants: 5
+
+# =============================================================================
+# Paths
+# =============================================================================
+paths:
+  data_dir: "data"
+  results_dir: "results"
+  model_dir: "results/models"
+  log_dir: "results/logs"
+  key_dir: "results/keys"

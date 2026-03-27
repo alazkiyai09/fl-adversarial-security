@@ -1,0 +1,8 @@
+# Backdoor Attack Configuration
+
+attack: backdoor
+attack_config:
+  target_class: 0
+  poison_ratio: 0.5
+  trigger_pattern: gaussian
+  trigger_scale: 2.0

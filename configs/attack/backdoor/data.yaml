@@ -1,0 +1,22 @@
+# Data configuration for backdoor attack on federated learning
+
+data:
+  # Transaction features (credit card fraud detection)
+  num_features: 30
+  num_classes: 2
+
+  # Dataset splits
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+
+  # Federated learning partitioning
+  num_clients: 20
+  samples_per_client: 5000
+
+  # Feature ranges for realistic trigger design
+  feature_ranges:
+    amount: [0.0, 1000.0]
+    time: [0, 24]  # hours
+    v1: [-5.0, 5.0]  # PCA features
+    v2: [-5.0, 5.0]

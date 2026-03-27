@@ -1,0 +1,27 @@
+# Model poisoning attack configuration
+
+attack:
+  type: model_poison
+
+  # Attack type
+  poison_type: scaling  # scaling, sign_flip, gaussian
+  magnitude: -5.0  # Scaling factor or flip magnitude
+
+  # Target parameters
+  target_layers: all  # all, first, last, or specific layer names
+  layer_names: []
+
+  # Byzantine client selection
+  num_byzantine: ${attack.num_byzantine}
+  byzantine_strategy: random
+
+  # Collusion
+  colluding: true  # Byzantine clients coordinate attacks
+  collusion_strategy: uniform  # uniform, random
+
+  # Persistence
+  persistent: true
+  adaptive: false
+
+  # For sign-flip attack
+  sign_flip_ratio: 1.0  # Fraction of parameters to flip

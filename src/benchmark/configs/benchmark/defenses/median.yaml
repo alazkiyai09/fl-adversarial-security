@@ -1,0 +1,4 @@
+# Median Defense Configuration
+
+defense: median
+defense_config: {}

@@ -1,0 +1,26 @@
+# Medium Privacy Preset
+# Balanced privacy-utility trade-off
+# Use for: Standard fraud detection, moderate regulatory requirements
+
+privacy:
+  dp_enabled: true
+  epsilon: 1.0  # Moderate privacy guarantee
+  delta: 1e-5
+  max_grad_norm: 1.0
+  noise_multiplier: 0.3  # Moderate noise
+  secure_agg_enabled: false  # Optional
+
+security:
+  signguard_enabled: true
+  signguard_threshold: 0.1
+  attack_detection_enabled: true
+
+fl:
+  n_rounds: 100
+  local_epochs: 5
+
+model:
+  learning_rate: 0.001
+
+data:
+  batch_size: 32

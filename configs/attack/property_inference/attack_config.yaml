@@ -1,0 +1,56 @@
+# Property Inference Attack Configuration
+
+attack:
+  # Target property to infer
+  target_property: "fraud_rate"  # Options: fraud_rate, dataset_size, feature_mean, feature_std, class_imbalance
+
+  # Attack scenario
+  scenario: "server"  # Options: server (observe all updates), client (observe global model)
+
+  # Meta-classifier configuration
+  meta_classifier:
+    type: "rf_regressor"  # Options: rf_regressor, ridge, svm_regressor, mlp
+    n_estimators: 100
+    max_depth: 10
+    random_state: 42
+
+  # Training data generation
+  training:
+    n_datasets: 500  # Number of synthetic datasets to generate
+    train_test_split: 0.8
+    cross_validation_folds: 5
+
+  # Property ranges for synthetic data generation
+  property_ranges:
+    fraud_rate:
+      min: 0.01  # 1%
+      max: 0.20  # 20%
+      n_steps: 50
+    dataset_size:
+      min: 100
+      max: 10000
+      n_steps: 50
+    feature_mean:
+      min: -2.0
+      max: 2.0
+      n_steps: 20
+
+  # Update serialization
+  update_format: "weights"  # Options: weights, gradients
+
+  # Attack evaluation
+  evaluation:
+    n_bootstrap_samples: 1000
+    confidence_level: 0.95
+    compare_to_baseline: true
+
+# Defense evaluation
+defenses:
+  differential_privacy:
+    enabled: true
+    noise_levels: [0.1, 0.5, 1.0, 2.0]
+  secure_aggregation:
+    enabled: true
+  clipping:
+    enabled: true
+    clip_norms: [1.0, 5.0, 10.0]

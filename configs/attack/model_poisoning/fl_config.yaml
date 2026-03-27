@@ -1,0 +1,37 @@
+# Federated Learning Configuration
+
+# Training parameters
+num_rounds: 50
+local_epochs: 5
+batch_size: 32
+learning_rate: 0.01
+
+# Client selection
+client_fraction: 0.5  # Fraction of clients selected per round (for FedAvg)
+min_available_clients: 8  # Minimum clients before training starts
+min_fit_clients: 5  # Minimum clients per round
+
+# Model architecture
+input_dim: 20  # Number of features
+hidden_dims: [64, 32]  # Hidden layer sizes
+output_dim: 2  # Binary classification
+
+# Data configuration
+dataset_name: "credit_card_fraud"
+test_split: 0.2
+val_split: 0.1
+
+# Optimizer
+optimizer: "SGD"
+momentum: 0.9
+weight_decay: 0.0001
+
+# Early stopping
+early_stopping:
+  enabled: true
+  patience: 5
+  min_delta: 0.001
+
+# Logging
+log_frequency: 1  # Log metrics every N rounds
+save_frequency: 10  # Save checkpoints every N rounds

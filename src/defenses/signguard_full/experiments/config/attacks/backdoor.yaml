@@ -1,0 +1,25 @@
+# Backdoor attack configuration
+
+attack:
+  type: backdoor
+
+  # Trigger pattern
+  trigger_type: pattern  # pattern, pixel, patch
+  trigger_pattern: [1, 1, 1, 1, 1]  # Binary pattern for first 5 features
+  trigger_size: 5  # Number of features to modify
+
+  # Attack parameters
+  target_class: 1  # Class to trigger (fraud)
+  poison_ratio: 0.2  # Fraction of data to poison
+  poison_only_malicious: true  # Only poison malicious clients' data
+
+  # Backdoor strength
+  injection_strength: 1.0
+
+  # Byzantine client selection
+  num_byzantine: ${attack.num_byzantine}
+  byzantine_strategy: random
+
+  # Persistence
+  persistent: true
+  adaptive: false

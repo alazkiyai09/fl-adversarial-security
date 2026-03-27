@@ -1,0 +1,16 @@
+# FoolsGold defense configuration
+
+defense:
+  type: foolsgold
+
+  # Similarity computation
+  similarity_metric: cosine  # cosine, dot_product
+  history_length: 10
+
+  # Weight computation
+  clip_value: 0.5  # For clipping similarity scores
+  min_weight: 0.01
+
+  # Aggregation
+  normalize_weights: true
+  fallback_to_mean: false

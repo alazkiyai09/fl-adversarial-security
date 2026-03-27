@@ -1,0 +1,68 @@
+# SignGuard defense configuration
+
+defense:
+  type: signguard
+
+  # Cryptographic authentication
+  crypto:
+    enabled: true
+    algorithm: ECDSA
+    curve: SECP256R1
+    key_size: 256
+
+  # Anomaly detection
+  detection:
+    enabled: true
+    ensemble_method: weighted  # weighted, voting, stacking
+
+    # Magnitude detector (L2 norm)
+    magnitude:
+      enabled: true
+      weight: 0.4
+      threshold: 0.5
+      use_mad: true  # Median Absolute Deviation
+
+    # Direction detector (cosine similarity)
+    direction:
+      enabled: true
+      weight: 0.4
+      threshold: 0.5
+      similarity_metric: cosine  # cosine, dot_product
+
+    # Score detector (loss deviation)
+    loss:
+      enabled: true
+      weight: 0.2
+      threshold: 0.5
+      use_iqr: true  # Interquartile range
+
+    # Combined threshold
+    combined_threshold: 0.7
+
+  # Reputation system
+  reputation:
+    enabled: true
+    method: decay  # decay, adaptive, exponential
+
+    # Decay-based reputation
+    initial_reputation: 0.5
+    decay_rate: 0.05
+    honesty_bonus: 0.1
+    penalty_factor: 0.5
+
+    # Bounds
+    min_reputation: 0.0
+    max_reputation: 1.0
+
+    # History
+    history_length: 10
+
+  # Aggregation
+  aggregation:
+    method: weighted  # weighted, robust_weighted
+    min_reputation_threshold: 0.1
+    normalize_weights: true
+
+    # Robust fallback
+    robust_fallback: true  # Fall back to robust aggregation if < min clients
+    fallback_method: trimmed_mean

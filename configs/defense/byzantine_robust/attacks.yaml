@@ -1,0 +1,42 @@
+# Attack Configurations for Robustness Evaluation
+
+# Label Flipping Attack
+label_flipping:
+  description: "Malicious clients flip labels to poison the model"
+  target_labels: [0, 1]  # Labels to flip
+  flip_to: 9  # Target label to flip to
+  fraction_malicious: 0.2  # Fraction of malicious clients
+
+# Backdoor Attack
+backdoor:
+  description: "Malicious clients inject backdoor triggers"
+  target_label: 0  # Label to trigger with backdoor
+  pattern_size: 3  # Size of backdoor pattern (e.g., 3x3 pixels)
+  pattern_value: 1.0  # Value to set in pattern
+  injection_location: "bottom_right"  # Where to inject pattern
+  fraction_malicious: 0.2
+
+# Model Poisoning Attack
+model_poisoning:
+  description: "Malicious clients send corrupted model updates"
+  poison_magnitude: 5.0  # Magnitude of poisoning noise
+  poison_direction: "opposite"  # Direction relative to true gradient
+  fraction_malicious: 0.2
+
+# Evaluation settings
+evaluation:
+  metrics:
+    - accuracy
+    - attack_success_rate
+    - convergence_speed
+
+  n_seeds: 3  # Number of random seeds for statistical significance
+  n_clients: 20  # Total number of clients per round
+  n_rounds: 10  # Number of federated learning rounds
+
+# Output settings
+output:
+  save_dir: "./data/results"
+  generate_heatmaps: true
+  generate_curves: true
+  save_rankings: true

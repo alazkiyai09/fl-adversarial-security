@@ -1,0 +1,23 @@
+# FedAdam Strategy Configuration
+
+strategy:
+  name: FedAdam
+
+  # Aggregation parameters
+  min_fit_clients: 8
+  min_evaluate_clients: 8
+  min_available_clients: 10
+
+  # Fraction of clients to use
+  fraction_fit: 0.8
+  fraction_evaluate: 0.8
+
+  # FedAdam-specific (server-side optimizer)
+  eta: 0.01  # Learning rate
+  eta_l: 0.01  # Client learning rate
+  beta_1: 0.9
+  beta_2: 0.999
+  tau: 1e-3
+
+  # Accept failures
+  accept_failures: true

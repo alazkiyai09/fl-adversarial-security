@@ -1,0 +1,6 @@
+# FoolsGold Defense Configuration
+
+defense: foolsgold
+defense_config:
+  history_length: 10
+  min_weight: 0.01

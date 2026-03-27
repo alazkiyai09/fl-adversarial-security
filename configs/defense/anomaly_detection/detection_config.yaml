@@ -1,0 +1,58 @@
+# FL Anomaly Detection Configuration
+
+# Detection thresholds (adjustable for precision-recall tradeoff)
+magnitude:
+  enabled: true
+  method: "zscore"  # Options: "zscore", "iqr"
+  zscore_threshold: 3.0
+  iqr_multiplier: 1.5
+
+similarity:
+  enabled: true
+  similarity_threshold: 0.8  # Cosine similarity cutoff
+  comparison_target: "global_model"  # Options: "global_model", "median_update"
+
+layerwise:
+  enabled: true
+  layer_threshold: 3.0  # Z-score for per-layer norms
+  min_anomalous_layers: 2  # Require this many layers to flag
+
+historical:
+  enabled: true
+  alpha: 0.3  # Exponential moving average smoothing
+  threshold: 2.0  # Z-score for reputation deviation
+  warmup_rounds: 5  # Rounds before using historical detector
+
+clustering:
+  enabled: true
+  method: "isolation_forest"  # Options: "dbscan", "isolation_forest"
+  contamination: 0.1  # Expected proportion of outliers
+  dbscan_eps: 0.5
+  dbscan_min_samples: 3
+
+spectral:
+  enabled: true
+  n_components: 5  # PCA components
+  threshold: 3.0  # Z-score in PCA space
+
+# Ensemble configuration
+ensemble:
+  voting: "majority"  # Options: "majority", "unanimous", "weighted", "soft"
+  weights:  # Only used for "weighted" voting
+    magnitude: 1.0
+    similarity: 1.0
+    layerwise: 0.8
+    historical: 1.2
+    clustering: 0.9
+    spectral: 0.7
+
+# Evaluation settings
+evaluation:
+  compute_metrics: true  # Compute metrics when ground truth available
+  plot_roc: true
+  roc_save_path: "data/results/roc_curves.png"
+  save_scores: true
+  scores_save_path: "data/results/detection_scores.npy"
+
+# Detection performance
+max_latency_ms: 100  # Maximum allowed detection time per client

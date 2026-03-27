@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  dashboard:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    container_name: fl_security_dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - DEMO_MODE=true
+      - REDIS_HOST=redis
+    volumes:
+      - ../data:/app/data
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: fl_dashboard_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  redis_data:

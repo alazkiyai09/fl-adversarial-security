@@ -1,0 +1,4 @@
+# FedAvg Defense Configuration (baseline)
+
+defense: fedavg
+defense_config: {}

@@ -1,0 +1,16 @@
+# Hydra Configuration
+
+defaults:
+  - benchmark: base_config
+
+run:
+  dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+
+sweep:
+  dir: multiruns/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  subdir: ${hydra.job.num}
+
+job:
+  name: ${hydra.job.name}
+  env_set:
+    PYTHONPATH: ${oc.env:PYTHONPATH}:${oc.env:PWD}/src

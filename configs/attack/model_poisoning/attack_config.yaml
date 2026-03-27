@@ -1,0 +1,42 @@
+# Model Poisoning Attack Configuration
+
+attack_strategies:
+  gradient_scaling:
+    enabled: true
+    scaling_factors: [10.0, 100.0]  # λ values to test
+
+  sign_flipping:
+    enabled: true
+    factor: -1.0
+
+  gaussian_noise:
+    enabled: true
+    noise_std: [0.1, 0.5, 1.0]  # σ values
+
+  targetted_manipulation:
+    enabled: true
+    target_layers: ["fc2.weight", "fc2.bias"]  # Last layer
+    perturbation_scale: 5.0
+
+  inner_product:
+    enabled: true
+    optimization_steps: 10
+    step_size: 0.1
+
+attack_timing:
+  # Options: "continuous", "intermittent", "late_stage"
+  strategy: "continuous"  # Default timing strategy
+  intermittent_frequency: 3  # Attack every N rounds
+  late_stage_start: 20  # Start attack after round N
+
+attackers:
+  # Fraction of malicious clients (0.0 to 1.0)
+  fraction: 0.2
+  # Total number of clients
+  total_clients: 10
+
+detectability:
+  # Thresholds for anomaly detection
+  l2_norm_threshold: 10.0  # Flag updates above this
+  cosine_similarity_threshold: -0.5  # Flag below this (negative correlation)
+  # Monitor and log all client updates for analysis

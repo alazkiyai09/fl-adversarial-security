@@ -1,0 +1,17 @@
+# Label flipping attack configuration
+
+attack:
+  type: label_flip
+
+  # Attack parameters
+  flip_ratio: 0.2  # Fraction of labels to flip
+  source_class: null  # null = random, or specify class ID
+  target_class: 1  # Flip to this class (fraud)
+
+  # Byzantine client selection
+  num_byzantine: ${attack.num_byzantine}
+  byzantine_strategy: random  # random, fixed
+
+  # Persistence
+  persistent: true  # Attack continues across rounds
+  adaptive: false  # Adapt to evasion attempts

@@ -1,0 +1,14 @@
+# Krum defense configuration
+
+defense:
+  type: krum
+
+  # Krum parameters
+  num_byzantines: ${attack.num_byzantine}
+  multi_krum: false  # Use multi-krum variant
+
+  # Distance metric
+  distance_metric: euclidean  # euclidean, cosine
+
+  # Aggregation
+  fallback_to_mean: false  # If not enough clients

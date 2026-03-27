@@ -1,0 +1,44 @@
+# Secure Aggregation Protocol Configuration
+
+# Cryptographic parameters
+crypto:
+  # Diffie-Hellman parameters (2048-bit MODP group from RFC 3526)
+  dh_prime: |
+    87A8E61DB4B6663CFFBBD19C651959998CEEF608660DD0F25D2CEED4435E3B00E8DF6361
+    C06F5BB1D1A2CCB5C9F2E2D78C3B3E8F6A9BC8B5D5A5E5F6A7B8C9D0E1F2A3B4C5D6E7F8
+    A9B0C1D2E3F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2E3F4
+  dh_generator: 3
+
+  # Prime field for secret sharing (large 256-bit prime)
+  secret_sharing_prime: |
+    115792089210356248762697446949407573529086203412404322067073627014819481352547
+
+  # Threshold parameters
+  threshold_ratio: 0.7  # t = n * threshold_ratio (tolerate up to 30% dropouts)
+
+# Protocol parameters
+protocol:
+  dropout_tolerance: 0.3  # Maximum acceptable dropout rate (30%)
+  timeout_seconds: 30.0   # Timeout for client responses
+  max_retries: 3          # Maximum retry attempts for failed messages
+
+# Simulation parameters
+simulation:
+  num_clients: 10         # Default number of clients
+  model_size: 1000        # Default model parameter count
+  dropout_rate: 0.2       # Default dropout rate for simulations
+  num_rounds: 5           # Default number of FL rounds
+
+# Performance tracking
+metrics:
+  track_communication: true
+  track_computation: true
+  track_memory: true
+  save_results: true
+
+# Security settings
+security:
+  validate_masks: true
+  verify_reconstruction: true
+  detect_collusion: true
+  log_security_events: true

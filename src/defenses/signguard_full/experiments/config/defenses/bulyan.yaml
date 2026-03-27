@@ -1,0 +1,17 @@
+# Bulyan defense configuration
+
+defense:
+  type: bulyan
+
+  # Bulyan parameters
+  num_byzantines: ${attack.num_byzantine}
+  num_krum_points: 4  # Number of points to select via Krum
+
+  # Inner Krum configuration
+  distance_metric: euclidean
+
+  # Trimming for second stage
+  trim_ratio: 0.2
+
+  # Aggregation
+  fallback_to_mean: false

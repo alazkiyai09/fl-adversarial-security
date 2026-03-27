@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fl-adversarial-security-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fl-adversarial-security-api
+  template:
+    metadata:
+      labels:
+        app: fl-adversarial-security-api
+    spec:
+      containers:
+        - name: api
+          image: fl-adversarial-security:latest
+          ports:
+            - containerPort: 8000

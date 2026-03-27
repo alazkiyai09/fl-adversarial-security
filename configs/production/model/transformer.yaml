@@ -1,0 +1,27 @@
+# Transformer Model Configuration
+
+model:
+  type: transformer
+  input_size: 30
+  d_model: 64
+  n_heads: 4
+  n_layers: 2
+  dim_feedforward: 256
+  dropout: 0.1
+  output_size: 2
+  learning_rate: 0.0001
+
+  # Optimizer
+  optimizer: adamw
+  weight_decay: 1e-4
+
+  # Learning rate scheduler
+  scheduler: cosine
+  warmup_epochs: 10
+
+  # Loss function
+  loss_function: cross_entropy
+  class_weights: null
+
+  # Positional encoding
+  max_seq_length: 100

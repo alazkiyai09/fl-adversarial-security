@@ -1,0 +1,10 @@
+# FedAvg baseline (no defense) configuration
+
+defense:
+  type: fedavg
+
+  # No defense parameters - simple averaging
+  # This serves as the baseline
+
+  # Aggregation
+  normalize_by_samples: true  # Weight by number of samples

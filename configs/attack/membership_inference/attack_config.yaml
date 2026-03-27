@@ -1,0 +1,72 @@
+# Membership Inference Attack Configuration
+# This config ensures clean separation between target and attack models
+
+# Shadow model settings
+shadow_models:
+  n_shadow: 10                # Number of shadow models to train
+  shadow_epochs: 50           # Epochs per shadow model
+  shadow_lr: 0.001            # Learning rate for shadow models
+  batch_size: 64              # Batch size for shadow training
+
+# Threshold attack settings
+threshold_attack:
+  target_fpr: 0.05            # Target false positive rate for calibration
+  confidence_metric: "max"    # Options: "max", "entropy", "loss"
+
+# Metric-based attack settings
+metric_attacks:
+  metrics:
+    - "loss"                  # Loss-based attack
+    - "entropy"               # Entropy-based attack
+    - "modified_entropy"      # Modified entropy attack
+  loss_function: "cross_entropy"
+
+# FL-specific attack settings
+fl_attacks:
+  # Attack scenarios
+  attack_global_model: true
+  attack_local_models: true
+  temporal_analysis: true
+
+  # Rounds to analyze for temporal attacks
+  temporal_rounds: [5, 10, 15, 20]
+
+# Defense evaluation
+defenses:
+  differential_privacy:
+    enabled: true
+    noise_levels: [0.1, 0.5, 1.0, 2.0, 5.0]  # Gaussian noise std dev
+    clip_norm: 1.0
+
+  training_epochs:
+    enabled: true
+    epochs_to_test: [5, 10, 20, 50, 100]
+
+# Evaluation settings
+evaluation:
+  metrics:
+    - "auc"                   # Area under ROC curve
+    - "tpr_at_fpr"            # True positive rate at fixed FPR
+    - "precision_recall"      # Precision-recall curve
+    - "accuracy"              # Overall accuracy
+
+  fpr_points: [0.01, 0.05, 0.1, 0.2]  # FPR points for TPR calculation
+
+  # Random seed for reproducibility
+  random_seed: 42
+
+# Data split settings (CRITICAL: No leakage)
+data_splits:
+  target_train_ratio: 0.7
+  target_test_ratio: 0.15
+  shadow_train_ratio: 0.1     # Remaining 0.05 for attack calibration
+
+  # Ensure strict separation
+  validate_separation: true
+
+# Logging
+logging:
+  level: "INFO"
+  log_file: "results/attack_performance/attack_log.txt"
+  save_predictions: true
+  save_models: false          # Set true for debugging

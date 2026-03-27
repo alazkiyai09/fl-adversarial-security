@@ -1,0 +1,7 @@
+# Label Flip Attack Configuration
+
+attack: label_flip
+attack_config:
+  flip_ratio: 1.0
+  source_class: 1  # Flip from fraud (1)
+  target_class: 0  # To legitimate (0)

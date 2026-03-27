@@ -1,0 +1,96 @@
+# Base configuration for FL Defense Benchmark
+
+# Experiment metadata
+experiment_name: "fl_defense_benchmark"
+use_mlflow: true
+
+# Dataset configuration
+dataset: "synthetic_bank"  # Options: credit_card, synthetic_bank
+num_clients: 10
+min_samples_per_client: 10
+
+# Synthetic dataset params (used only if dataset=synthetic_bank)
+n_samples: 100000
+fraud_ratio: 0.01
+
+# Non-IID partitioning
+alpha_values: [0.1, 0.5, 1.0, 10.0]
+
+# Attack configuration
+attacks:
+  - none
+  - label_flip
+  - backdoor
+  - gradient_scale
+  - sign_flip
+  - gaussian_noise
+
+attack_config:
+  # Label flip
+  flip_ratio: 1.0
+  source_class: 1
+  target_class: 0
+
+  # Backdoor
+  target_class: 0
+  poison_ratio: 0.5
+  trigger_scale: 2.0
+
+  # Gradient scaling
+  scale_factor: 10.0
+
+  # Sign flip
+  scale: 1.0
+  smart_flip: false
+
+  # Gaussian noise
+  std: 1.0
+  relative: true
+
+# Defense configuration
+defenses:
+  - fedavg
+  - median
+  - trimmed_mean
+  - krum
+  - multikrum
+  - bulyan
+  - foolsgold
+  - anomaly_detection
+
+defense_config:
+  # Trimmed Mean
+  beta: 0.1
+
+  # Krum/MultiKrum/Bulyan
+  num_malicious: 0
+
+  # FoolsGold
+  history_length: 10
+  min_weight: 0.01
+
+  # Anomaly Detection
+  method: "zscore"  # Options: zscore, iqr, mahalanobis, isolation_forest
+  threshold: 3.0
+  use_median: true
+
+# Attacker fractions to test
+attacker_fractions: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5]
+
+# Training hyperparameters
+num_rounds: 10
+local_epochs: 5
+batch_size: 32
+learning_rate: 0.01
+fraction_fit: 0.5
+
+# Model architecture
+hidden_dims: [128, 64, 32]
+dropout: 0.3
+num_classes: 2
+
+# Reproducibility
+seeds: [42, 43, 44, 45, 46]  # 5 runs per config
+
+# Output
+output_dir: "results"
