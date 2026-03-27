@@ -1,0 +1,5 @@
+benchmark:
+  datasets: [credit_card, synthetic_bank]
+  attacks: [label_flip, backdoor, model_poisoning]
+  defenses: [krum, trimmed_mean, foolsgold, signguard]
+  rounds: 20

@@ -1,36 +1,40 @@
-# fl-adversarial-security
+# FL Adversarial Security (`fl-adversarial-security`)
 
-Attack, defense, benchmark, and secure-production FL research split out of `fl-security-research`.
+Research and engineering platform for **federated learning attacks, defenses, secure aggregation, benchmarking, and production security monitoring**.
 
-This repo consolidates the original security-focused projects into one structure:
+## Why This Repository
 
-- `src/attacks/` for poisoning and privacy attacks
-- `src/defenses/` for robust aggregation, anomaly detection, FoolsGold, and SignGuard
-- `src/secure_aggregation/` for encrypted aggregation research
-- `src/benchmark/` for attack-vs-defense evaluation
-- `src/production/` for the production secure FL stack
-- `src/dashboard/` for monitoring and visualization
-- `src/api/` for the unified FastAPI surface
+Secure federated learning requires both offensive and defensive testing. `fl-adversarial-security` packages attack simulation, robust aggregation, benchmark surfaces, and production-oriented defense components in one repository.
 
-Preserved project implementations remain in place under the new layout, especially in `legacy/` folders. Day 30 capstone paper material is carried in `docs/`.
+## Core Features
 
-## Legacy Sources Merged
+- Attack modules: label flipping, backdoor, model poisoning, gradient leakage, membership/property inference
+- Defense modules: robust aggregation, anomaly detection, FoolsGold, SignGuard
+- Secure aggregation and production privacy layers
+- Benchmark runners and configuration surfaces
+- API routes for attacks, defenses, benchmark, and predict flows
+- Dashboard and production-serving integrations
 
-- `label_flipping_attack`
-- `backdoor_attack_fl`
-- `model_poisoning_fl`
-- `gradient_leakage_attack`
-- `membership_inference_attack`
-- `property_inference_attack`
-- `byzantine_robust_fl`
-- `fl_anomaly_detection`
-- `foolsgold_defense`
-- `signguard_defense`
-- `signguard`
-- `fl_defense_benchmark`
-- `secure_aggregation_fl`
-- `privacy_preserving_fl_fraud`
-- `fl_security_dashboard`
+## Project Structure
+
+- `src/attacks/`: adversarial attack modules and utilities
+- `src/defenses/`: defense mechanisms and robust aggregation logic
+- `src/benchmark/`: benchmarking runner and configs
+- `src/secure_aggregation/`: privacy-preserving aggregation protocol code
+- `src/production/`: serving, monitoring, and deployment-facing modules
+- `src/api/`: unified FastAPI service
+
+## API Endpoints
+
+- `POST /api/v1/attacks/simulate`
+- `GET /api/v1/attacks/types`
+- `POST /api/v1/defenses/evaluate`
+- `GET /api/v1/defenses/types`
+- `POST /api/v1/benchmark/run`
+- `GET /api/v1/benchmark/results`
+- `POST /api/v1/predict`
+- `GET /health`
+- `GET /metrics`
 
 ## Quick Start
 
@@ -39,8 +43,6 @@ pip install -r requirements.txt
 uvicorn src.api.main:app --reload
 ```
 
-## Smoke Test
+## SEO Keywords
 
-```bash
-pytest -q tests/test_api.py
-```
+federated learning security, byzantine robust aggregation, backdoor attack federated learning, label flipping attack, foolsgold defense, signguard defense, secure aggregation fl

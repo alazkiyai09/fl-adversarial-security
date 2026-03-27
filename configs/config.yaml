@@ -1,0 +1,9 @@
+security:
+  attack: label_flip
+  defense: krum
+  malicious_fraction: 0.2
+training:
+  rounds: 30
+  clients: 20
+evaluation:
+  metrics: [attack_success_rate, defense_gain, auc]
